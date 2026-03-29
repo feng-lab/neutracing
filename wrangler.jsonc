@@ -4,15 +4,20 @@
   "compatibility_date": "2026-03-29",
   "pages_build_output_dir": "./dist",
 
-  // Add the DOWNLOAD_COUNTS KV binding here after creating the namespace:
   "kv_namespaces": [
     {
       "binding": "DOWNLOAD_COUNTS",
-      "id": "bb4220502c7c49eb870694613e0de424",
-    },
-    {
-      "binding": "DOWNLOAD_COUNTS",
-      "preview_id": "46fc844f1379461ebfab64802e34d8cf",
-    },
+      "id": "bb4220502c7c49eb870694613e0de424"
+    }
   ],
+  "env": {
+    "preview": {
+      "kv_namespaces": [
+        {
+          "binding": "DOWNLOAD_COUNTS",
+          "id": "46fc844f1379461ebfab64802e34d8cf"
+        }
+      ]
+    }
+  }
 }
