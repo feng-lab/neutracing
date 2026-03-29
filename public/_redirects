@@ -1,4 +1,7 @@
 /neutube / 301
+/static https://repo.neutracing.com/static/ 301
+/static/ https://repo.neutracing.com/static/ 301
+/static/* https://repo.neutracing.com/static/:splat 301
 /about /about/ 301
 /download /download/ 301
 /faq /faq/ 301
