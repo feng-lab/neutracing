@@ -1,0 +1,73 @@
+---
+import "../styles/global.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import site from "../data/site";
+
+interface NavItem {
+  title: string;
+  slug: string;
+  path: string;
+}
+
+const {
+  title = site.meta.title,
+  description = site.meta.tagline,
+  currentPath = "/",
+  nav = [],
+}: {
+  title?: string;
+  description?: string;
+  currentPath?: string;
+  nav?: NavItem[];
+} = Astro.props;
+
+const fullTitle = title === site.meta.title ? title : `${title} | ${site.meta.title}`;
+const themeBootScript = `
+  (() => {
+    const stored = localStorage.getItem("neutracing-theme");
+    const system = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = stored || system;
+  })();
+`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/neutube-logo.png" />
+    <link rel="apple-touch-icon" href="/neutube-logo.png" />
+    <meta name="generator" content={Astro.generator} />
+    {description && <meta name="description" content={description} />}
+    <script is:inline set:html={themeBootScript}></script>
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/neutube-logo.png" alt="" width="97" height="95" aria-hidden="true" />
+          <span>
+            <strong>{site.meta.title}</strong>
+            <small>Open-source neuron tracing software</small>
+          </span>
+        </a>
+
+        <div class="site-header-actions">
+          <nav class="site-nav" aria-label="Main">
+            {nav.map((item) => (
+              <a class:list={["nav-link", currentPath === item.path && "is-active"]} href={item.path}>
+                {item.title}
+              </a>
+            ))}
+          </nav>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <slot />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<script>
+  const formatter = new Intl.NumberFormat("en-US");
+
+  async function hydrateDownloadCounts() {
+    try {
+      const response = await fetch("/api/download-counts");
+      if (!response.ok) return;
+
+      const counts = await response.json();
+      document.querySelectorAll("[data-download-count]").forEach((node) => {
+        const slug = node.getAttribute("data-download-count");
+        if (!slug) return;
+
+        const next = counts[slug];
+        if (next == null) return;
+
+        node.textContent = `${formatter.format(next)} downloads`;
+      });
+    } catch {
+      // Static fallback count stays visible when the API is unavailable.
+    }
+  }
+
+  hydrateDownloadCounts();
+</script>

@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from "astro:content";
+import DownloadCard from "../components/DownloadCard.astro";
+import DownloadCountHydrator from "../components/DownloadCountHydrator.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import site from "../data/site";
+import { buildNav, featuredDownloads, listedDownloads, pagePath } from "../lib/content";
+
+const pages = await getCollection("pages");
+const navigation = buildNav(pages);
+const homePage = pages.find((page) => page.id === "home");
+
+if (!homePage) {
+  throw new Error("Missing home page content.");
+}
+
+const featuredPages = pages
+  .filter((page) => page.data.homeFeatured)
+  .sort((left, right) => (left.data.navOrder ?? 999) - (right.data.navOrder ?? 999));
+const releases = featuredDownloads.length > 0 ? featuredDownloads : listedDownloads.slice(0, 2);
+const { Content: HomeContent } = await render(homePage);
+---
+
+<SiteLayout title="neuTube" description={homePage.data.description} currentPath="/" nav={navigation}>
+  <main id="main" class="page-frame">
+    <section class="hero-panel">
+      <span class="eyebrow">{site.meta.title}</span>
+      <h1>Free software for neuron tracing</h1>
+      <p class="lead">
+        neuTube is open source software for reconstructing neurons from fluorescence microscope images and for viewing or editing SWC reconstructions.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button" href="/download/">Download</a>
+        <a class="button secondary" href="/tutorial/">Tutorial</a>
+        <a class="button ghost" href={site.meta.repositoryUrl}>Source code</a>
+      </div>
+    </section>
+
+    <section class="page-panel reading-panel">
+      <div class="section-heading">
+        <div>
+          <h2>About neuTube</h2>
+        </div>
+      </div>
+
+      <div class="rich-content">
+        <HomeContent />
+      </div>
+    </section>
+
+    <section class="page-panel">
+      <div class="section-heading">
+        <div>
+          <h2>Latest release</h2>
+          <p>Start with the current public builds, then use the download page for older versions, datasets, and example files.</p>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        {releases.map((item) => (
+          <DownloadCard item={item} showRelease={true} />
+        ))}
+      </div>
+    </section>
+
+    <section class="page-panel">
+      <div class="section-heading">
+        <div>
+          <h2>Documentation</h2>
+          <p>Use the manual, tutorial videos, FAQ, news, and the download archive without the old CMS interface.</p>
+        </div>
+      </div>
+
+      <div class="card-grid card-grid-compact">
+        {featuredPages.map((page) => (
+          <article class="card">
+            <h3>{page.data.title}</h3>
+            <p>{page.data.description}</p>
+            <a class="button secondary" href={pagePath(page)}>Open {page.data.title}</a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <DownloadCountHydrator />
+</SiteLayout>

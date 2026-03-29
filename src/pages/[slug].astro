@@ -1,0 +1,119 @@
+---
+import { getCollection, render } from "astro:content";
+import DownloadCard from "../components/DownloadCard.astro";
+import DownloadCountHydrator from "../components/DownloadCountHydrator.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import site from "../data/site";
+import { buildNav, downloadBySlug, pagePath } from "../lib/content";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+
+  return pages
+    .filter((page) => page.id !== "home")
+    .map((page) => ({
+      params: { slug: page.id },
+      props: { page },
+    }));
+}
+
+const pages = await getCollection("pages");
+const navigation = buildNav(pages);
+const { page } = Astro.props;
+const { Content } = await render(page);
+const currentPath = pagePath(page);
+const isDownloadPage = page.id === "download";
+const isTutorialPage = page.id === "tutorial";
+const downloadSections = site.downloadPage.sections as unknown as ReadonlyArray<{
+  title: string;
+  level: number;
+  downloadSlugs: readonly string[];
+  link?: {
+    label: string;
+    href: string;
+  };
+  note?: string;
+}>;
+---
+
+<SiteLayout title={page.data.title} description={page.data.description} currentPath={currentPath} nav={navigation}>
+  <main id="main" class="page-frame">
+    <section class="hero-panel">
+      <span class="eyebrow">{site.meta.title}</span>
+      <h1>{page.data.title}</h1>
+      {page.data.description && <p class="lead">{page.data.description}</p>}
+    </section>
+
+    {isDownloadPage && (
+      <>
+        <section class="page-panel reading-panel">
+          <div class="rich-content">
+            <Content />
+          </div>
+        </section>
+
+        <section class="page-panel section-stack">
+          {downloadSections.map((section) => (
+            <section class="download-section">
+              {section.level === 2 ? <h2>{section.title}</h2> : <h3>{section.title}</h3>}
+              {(section.link || section.note) && (
+                <div class="rich-content">
+                  {section.link && (
+                    <p>
+                      <a href={section.link.href}>{section.link.label}</a>
+                    </p>
+                  )}
+                  {section.note && <p>{section.note}</p>}
+                </div>
+              )}
+              {section.downloadSlugs.length > 0 && (
+                <div class="card-grid">
+                  {section.downloadSlugs.map((slug) => {
+                    const item = downloadBySlug(slug);
+                    return item ? <DownloadCard item={item} showRelease={section.level !== 2} /> : null;
+                  })}
+                </div>
+              )}
+            </section>
+          ))}
+        </section>
+
+        <DownloadCountHydrator />
+      </>
+    )}
+
+    {isTutorialPage && (
+      <section class="page-panel reading-panel">
+        <div class="rich-content">
+          <Content />
+        </div>
+
+        <div class="video-grid tutorial-video-grid">
+          {site.tutorialVideos.map((video) => (
+            <article class="card video-card">
+              {video.embedUrl && (
+                <iframe
+                  src={video.embedUrl}
+                  title={video.title}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              )}
+              <h3>{video.title}</h3>
+              <a class="button secondary" href={video.url}>Open on YouTube</a>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {!isDownloadPage && !isTutorialPage && (
+      <section class="page-panel reading-panel">
+        <div class="rich-content">
+          <Content />
+        </div>
+      </section>
+    )}
+  </main>
+</SiteLayout>

@@ -1,0 +1,29 @@
+---
+import { downloadCountLabel, trackedDownloadHref } from "../lib/content";
+
+const { item, showRelease = false } = Astro.props;
+const checksumOnlyDescription = Boolean(
+  item.sha1 && item.descriptionText && /^SHA1\([^)]+\)\s*=\s*[a-f0-9]+$/i.test(item.descriptionText.trim())
+);
+---
+
+<article class="download-card card">
+  <div class="download-card-topline">
+    <span class="pill">{item.platform}</span>
+    {showRelease && <span class="pill subtle">{item.releaseLabel}</span>}
+  </div>
+
+  <h3>{item.title}</h3>
+  {item.descriptionText && !checksumOnlyDescription && <p>{item.descriptionText}</p>}
+
+  <div class="download-card-meta">
+    <span class="count-badge" data-download-count={item.slug}>
+      {downloadCountLabel(item.seedCount)}
+    </span>
+    {item.sha1 && <code class="checksum">SHA1 {item.sha1}</code>}
+  </div>
+
+  <div class="download-card-actions">
+    <a class="button" href={trackedDownloadHref(item.slug)}>Download</a>
+  </div>
+</article>
