@@ -20,7 +20,7 @@ Since neuTube is mainly designed for tracing 3D images, an **image** often means
 
 ## Main Menu
 
-![Main menu](https://repo.neutracing.com/static/neutube/Slide2.png)
+![Main menu](/images/neutube/Slide2.png)
 
 ### File
 
@@ -55,21 +55,21 @@ Since neuTube is mainly designed for tracing 3D images, an **image** often means
 
 ### Trace
 
-![Trace example 1](https://repo.neutracing.com/static/neutube/Slide4.png)
+![Trace example 1](/images/neutube/Slide4.png)
 
-![Trace example 2](https://repo.neutracing.com/static/neutube/Slide5.png)
+![Trace example 2](/images/neutube/Slide5.png)
 
 ### Editing
 
 **Start:** Select any node or set of nodes, then right-click to open the context menu.
 
-![Editing menu](https://repo.neutracing.com/static/neutube/editing_menu.png)
+![Editing menu](/images/neutube/editing_menu.png)
 
 #### Select Nodes
 
 The simplest way to select a node is to click it with the left mouse button. Once a node is selected, its display pattern changes to reflect the selection status.
 
-![Selection status](https://repo.neutracing.com/static/neutube/select.png)
+![Selection status](/images/neutube/select.png)
 
 There are also several ways to select multiple nodes:
 
@@ -77,17 +77,17 @@ There are also several ways to select multiple nodes:
 - **Shift + click:** Select the path from the currently selected node or nodes to the newly selected node.
 - **Alt + click:** Select all nodes growing from the clicked node until meeting other selected nodes.
 
-![Cmd/Ctrl selection](https://repo.neutracing.com/static/neutube/cmd_selection1.png)
+![Cmd/Ctrl selection](/images/neutube/cmd_selection1.png)
 
-![Shift selection](https://repo.neutracing.com/static/neutube/shift_selection.png)
+![Shift selection](/images/neutube/shift_selection.png)
 
-![Alt selection](https://repo.neutracing.com/static/neutube/alt_selection.png)
+![Alt selection](/images/neutube/alt_selection.png)
 
 The hotkey `Cmd/Ctrl + A` selects all nodes.
 
 #### Extend
 
-![Extend](https://repo.neutracing.com/static/neutube/extend.png)
+![Extend](/images/neutube/extend.png)
 
 #### Connect
 
@@ -95,17 +95,17 @@ neuTube provides several ways to connect nodes:
 
 - _Select a node and then connect to another_
 
-![Connect one node](https://repo.neutracing.com/static/neutube/connect.png)
+![Connect one node](/images/neutube/connect.png)
 
 - _Select multiple nodes and connect_
 
 Tip: the shortcut key for this operation is `C`.
 
-![Connect multiple nodes](https://repo.neutracing.com/static/neutube/connectm.png)
+![Connect multiple nodes](/images/neutube/connectm.png)
 
 - _Connect to the closest node_
 
-![Connect nearest node](https://repo.neutracing.com/static/neutube/connectn.png)
+![Connect nearest node](/images/neutube/connectn.png)
 
 #### Change Position
 
@@ -113,7 +113,7 @@ Tip: the shortcut key for this operation is `C`.
 
 The four keys `A`, `W`, `S`, and `D` are used to change the node position on the X-Y plane.
 
-![Change X-Y position](https://repo.neutracing.com/static/neutube/change_position.png)
+![Change X-Y position](/images/neutube/change_position.png)
 
 You can also use the mouse to move the selected nodes. Trigger `Move Selected (Shift+Mouse)` in the context menu and the cursor changes to a hand shape. Hold `Shift` and press the left button to move the selected nodes around.
 
@@ -125,7 +125,7 @@ Changing the Z position of a node is a little more complicated:
 2. Move the image plane to the target position. Any selected node will move its center to the displayed plane.
 3. Trigger the `Move to Current Plane` command in the context menu.
 
-![Change Z position](https://repo.neutracing.com/static/neutube/change_z1.png)
+![Change Z position](/images/neutube/change_z1.png)
 
 The shortcut key is `F`.
 
@@ -147,13 +147,13 @@ Select the nodes forming the edges to delete, then hit `B`. The corresponding co
 
 Note that the nodes must be directly connected:
 
-![Break connection](https://repo.neutracing.com/static/neutube/break.png)
+![Break connection](/images/neutube/break.png)
 
 ### 3D Editing
 
 Most editing functions in the 3D window are similar to those in the 2D window.
 
-![3D editing](https://repo.neutracing.com/static/neutube/figure.png)
+![3D editing](/images/neutube/figure.png)
 
 Note: The interface shown is from v0.93+, which has a slightly different control layout compared to older versions. In older versions, `Neurons` was `Swcs`, `Neuron Nodes` was `Swc Nodes`, `Image` was `Volume`, and `General` was `Utils`.
 
@@ -161,11 +161,11 @@ Special functions in 3D:
 
 #### Locate node(s) in 2D
 
-![Locate node](https://repo.neutracing.com/static/neutube/locate_node.png)
+![Locate node](/images/neutube/locate_node.png)
 
 #### Change Node Type in 3D
 
-![Change node type](https://repo.neutracing.com/static/neutube/neuron_type.png)
+![Change node type](/images/neutube/neuron_type.png)
 
 ### Hot Keys
 

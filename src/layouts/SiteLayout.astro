@@ -26,7 +26,11 @@ const themeBootScript = `
   (() => {
     const stored = localStorage.getItem("neutracing-theme");
     const system = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    document.documentElement.dataset.theme = stored || system;
+    const theme = stored || system;
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    root.style.backgroundColor = theme === "dark" ? "#0d0f14" : "#f8fafc";
   })();
 `;
 ---
@@ -36,6 +40,7 @@ const themeBootScript = `
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/png" href="/neutube-logo.png" />
     <link rel="apple-touch-icon" href="/neutube-logo.png" />
     <meta name="generator" content={Astro.generator} />

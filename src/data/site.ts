@@ -4,7 +4,6 @@ export const site = {
     tagline: "Free software for neuron tracing",
     url: "https://neutracing.com",
     repositoryUrl: "https://github.com/tingzhao/neutube",
-    assetBaseUrl: "https://repo.neutracing.com/static/neutube",
   },
   tutorialVideos: [
     {
