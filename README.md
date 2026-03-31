@@ -1,47 +1,37 @@
 # neutracing.com
 
-Astro site for `neutracing.com`, designed for Cloudflare Pages.
+Source for the public `neutracing.com` site.
 
-## Stack
+The site is built with Astro and deployed on Cloudflare Pages. It is mostly static content, with a small Pages Functions layer used only for download counting.
 
-- Astro + TypeScript
-- Local Markdown content in `src/content/pages`
-- Local structured data in `src/data`
-- Cloudflare Pages Functions for download counting
-- Cloudflare KV for download counts
-- Public R2 bucket for hosted files: `https://repo.neutracing.com/static/neutube`
-
-## Local commands
+## Development
 
 ```sh
 npm install
 npm run dev
-npm run build
 npm run check
-npm run preview
+npm run build
 ```
 
-## Content
+## Project structure
 
-- Page content lives in `src/content/pages`
-- Download metadata lives in `src/data/downloads.ts`
-- Site metadata, tutorial videos, FAQ entries, and download sections live in `src/data/site.ts`
-
-## Cloudflare behavior
-
+- `src/content/pages`
+  Markdown content for the public pages.
+- `src/data/downloads.ts`
+  Download catalog metadata and the centralized asset host/base URL for large files.
+- `src/data/site.ts`
+  Shared structured content such as tutorial video embeds and download-page grouping.
+- `public/images/neutube`
+  Local image assets used by the site.
 - `functions/api/download/[slug].ts`
-  Increments a KV counter and redirects to the file in R2.
+  Increments the download counter and redirects to the file host.
 - `functions/api/download-counts.ts`
-  Returns the current count set used by the download cards.
-- `public/_routes.json`
-  Limits function execution to the API routes.
+  Returns the current download counts for the UI.
 
-## Pages setup
+## Deployment
 
-1. Push this repo to GitHub.
-2. Create a Cloudflare Pages project from that repo.
-3. Use build command `npm run build`.
-4. Use build output directory `dist`.
-5. Create a KV namespace for download counts.
-6. Add the KV binding as `DOWNLOAD_COUNTS` in `wrangler.jsonc` or the Pages dashboard.
-7. Attach the custom domain `neutracing.com`.
+- Build command: `npm run build`
+- Output directory: `dist`
+- Required binding: `DOWNLOAD_COUNTS` KV namespace
+
+Large downloadable files remain hosted on the external asset host configured in `src/data/downloads.ts`, while the site HTML, CSS, JS, and image assets are served from this repo.
