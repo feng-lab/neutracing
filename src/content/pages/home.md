@@ -22,11 +22,9 @@ Howard Hughes Medical Institute, Janelia Research Campus, Ashburn, VA 20147
 
 ### Linqing Feng
 
-[fenglq@zhejianglab.edu.cn](mailto:fenglq@zhejianglab.edu.cn)
+[fenglinqing@gmail.com](mailto:fenglinqing@gmail.com)
 
 [Lab website](http://feng-lab.github.io)
-
-Zhejiang Lab, Artificial Intelligence Research Institute, Hangzhou, China
 
 ## How to cite
 
