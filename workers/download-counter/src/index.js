@@ -123,16 +123,15 @@ async function handleIncrement(env, body) {
 
 export class DownloadCounter extends DurableObject {
   async getValue(fallbackCount = 0) {
-    const fallbackFloor = normalizeCount(fallbackCount);
+    const fallbackValue = normalizeCount(fallbackCount);
     const stored = await this.ctx.storage.get("value");
-    let value = normalizeCount(stored);
 
-    if (value < fallbackFloor) {
-      value = fallbackFloor;
-      await this.ctx.storage.put("value", value);
+    if (stored === undefined || stored === null) {
+      await this.ctx.storage.put("value", fallbackValue);
+      return fallbackValue;
     }
 
-    return value;
+    return normalizeCount(stored);
   }
 
   async increment(fallbackCount = 0) {

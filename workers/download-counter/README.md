@@ -33,4 +33,4 @@ Bind the Worker into the Pages project as a service:
 ]
 ```
 
-The Pages Functions layer is written to prefer this service when present and fall back to KV otherwise. During cutover, the Durable Object state is seeded lazily from the existing KV value so counts do not reset.
+The Pages Functions layer uses this service in production. When the service is not bound, such as in local or preview environments, the site falls back to the catalog `seedCount` values.

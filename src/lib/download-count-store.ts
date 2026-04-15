@@ -7,7 +7,6 @@ type CounterServiceBinding = {
 };
 
 export interface DownloadCountEnv {
-  DOWNLOAD_COUNTS?: KVNamespace;
   DOWNLOAD_COUNTER_SERVICE?: CounterServiceBinding;
 }
 
@@ -33,22 +32,7 @@ const normalizeCount = (value: unknown) => {
   return parsed;
 };
 
-const parseStoredCount = (stored: string | null, seedCount: number | null) => {
-  if (stored === null) {
-    return normalizeCount(seedCount);
-  }
-
-  return normalizeCount(stored);
-};
-
-async function getLegacyCount(env: DownloadCountEnv, item: DownloadItem) {
-  if (!env.DOWNLOAD_COUNTS) {
-    return normalizeCount(item.seedCount);
-  }
-
-  const stored = await env.DOWNLOAD_COUNTS.get(item.slug);
-  return parseStoredCount(stored, item.seedCount ?? 0);
-}
+const getSeedCount = (item: DownloadItem) => normalizeCount(item.seedCount);
 
 async function requestCounterService<ResponseShape>(
   env: DownloadCountEnv,
@@ -75,32 +59,11 @@ async function requestCounterService<ResponseShape>(
   return (await response.json()) as ResponseShape;
 }
 
-export async function getDownloadCount(env: DownloadCountEnv, item: DownloadItem) {
-  const fallbackCount = await getLegacyCount(env, item);
-
-  try {
-    const response = await requestCounterService<CountResponse>(env, "/count", {
-      slug: item.slug,
-      fallbackCount,
-    });
-
-    if (response && response.count !== undefined) {
-      return normalizeCount(response.count);
-    }
-  } catch (error) {
-    console.error(`Failed to read download count for ${item.slug}`, error);
-  }
-
-  return fallbackCount;
-}
-
 export async function getDownloadCounts(
   env: DownloadCountEnv,
   items: readonly DownloadItem[],
 ) {
-  const fallbackEntries = await Promise.all(
-    items.map(async (item) => [item.slug, await getLegacyCount(env, item)] as const),
-  );
+  const fallbackEntries = items.map((item) => [item.slug, getSeedCount(item)] as const);
   const fallbackCounts = Object.fromEntries(fallbackEntries) as Record<string, number>;
 
   try {
@@ -133,7 +96,7 @@ export async function incrementDownloadCount(
   env: DownloadCountEnv,
   item: DownloadItem,
 ) {
-  const fallbackCount = await getLegacyCount(env, item);
+  const fallbackCount = getSeedCount(item);
 
   try {
     const response = await requestCounterService<CountResponse>(env, "/increment", {
@@ -148,11 +111,5 @@ export async function incrementDownloadCount(
     console.error(`Failed to increment download count for ${item.slug}`, error);
   }
 
-  if (env.DOWNLOAD_COUNTS) {
-    const nextCount = fallbackCount + 1;
-    await env.DOWNLOAD_COUNTS.put(item.slug, String(nextCount));
-    return nextCount;
-  }
-
-  return fallbackCount + 1;
+  return fallbackCount;
 }

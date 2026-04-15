@@ -9,8 +9,7 @@ The site is built with Astro and deployed on Cloudflare Pages. Most content is s
 - Astro for the site
 - Cloudflare Pages for hosting
 - Cloudflare Pages Functions for the download API
-- Cloudflare KV as the current count store
-- Optional Durable Object counter service in `workers/download-counter`
+- Durable Object counter service in `workers/download-counter`
 
 ## Local development
 
@@ -35,7 +34,7 @@ npm run cf:dev
 - `public/images/neutube` contains local image assets used by the site.
 - `functions/api/download/[slug].ts` redirects downloads and updates the counter.
 - `functions/api/download-counts.ts` returns current counts for the UI.
-- `workers/download-counter` contains the optional Durable Object-based counter service.
+- `workers/download-counter` contains the Durable Object-based counter service.
 
 ## Deployment
 
@@ -46,8 +45,9 @@ Cloudflare Pages:
 
 Production currently expects:
 
-- `DOWNLOAD_COUNTS` KV binding
-- `DOWNLOAD_COUNTER_SERVICE` service binding if the Durable Object worker is enabled
+- `DOWNLOAD_COUNTER_SERVICE` service binding
+
+Preview and local development fall back to the catalog `seedCount` values when the counter service is not bound.
 
 ## Downloads
 
