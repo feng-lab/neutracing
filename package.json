@@ -10,6 +10,8 @@
     "build": "astro build",
     "check": "astro check",
     "cf:dev": "npm run build && wrangler pages dev dist",
+    "counter:dev": "wrangler dev -c workers/download-counter/wrangler.jsonc",
+    "counter:deploy": "wrangler deploy -c workers/download-counter/wrangler.jsonc",
     "preview": "astro preview",
     "astro": "astro"
   },

@@ -11,6 +11,14 @@
     }
   ],
   "env": {
+    "production": {
+      "services": [
+        {
+          "binding": "DOWNLOAD_COUNTER_SERVICE",
+          "service": "neutracing-download-counter"
+        }
+      ]
+    },
     "preview": {
       "kv_namespaces": [
         {

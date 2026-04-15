@@ -1,24 +1,15 @@
 import downloads from "../../src/data/downloads";
+import {
+  getDownloadCounts,
+  type DownloadCountEnv,
+} from "../../src/lib/download-count-store";
 
-interface Env {
-  DOWNLOAD_COUNTS?: KVNamespace;
-}
+type Env = DownloadCountEnv;
 
 export const onRequestGet: PagesFunction<Env> = async ({
   env,
 }: PagesFunctionContext<Env>) => {
-  const counts: Record<string, number> = {};
-
-  await Promise.all(
-    downloads.map(async (item) => {
-      if (env.DOWNLOAD_COUNTS) {
-        const stored = await env.DOWNLOAD_COUNTS.get(item.slug);
-        counts[item.slug] = Number(stored ?? item.seedCount ?? 0);
-      } else {
-        counts[item.slug] = item.seedCount ?? 0;
-      }
-    })
-  );
+  const counts = await getDownloadCounts(env, downloads);
 
   return Response.json(counts, {
     headers: {
