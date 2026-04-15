@@ -12,6 +12,12 @@
   ],
   "env": {
     "production": {
+      "kv_namespaces": [
+        {
+          "binding": "DOWNLOAD_COUNTS",
+          "id": "bb4220502c7c49eb870694613e0de424"
+        }
+      ],
       "services": [
         {
           "binding": "DOWNLOAD_COUNTER_SERVICE",
